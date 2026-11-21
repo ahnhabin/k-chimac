@@ -157,7 +157,11 @@ dt { font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; color: v
 dd { font-size: 1.25rem; font-weight: 600; }
 dd a { text-decoration-color: var(--theme); text-underline-offset: 4px; }
 .visit-btns { display: flex; flex-wrap: wrap; gap: .8rem; }
-.map { width: 100%; min-height: 380px; border: 0; border-radius: 20px; filter: grayscale(.3) contrast(1.05); }
+/* The map is a cross-origin iframe: no reveal animation, lazy loading or CSS filter on it,
+   since any of those can leave it blank on phone browsers. */
+.map-wrap { display: flex; flex-direction: column; gap: .8rem; min-width: 0; }
+.map { display: block; width: 100%; height: 380px; flex: 1; border: 0; border-radius: 20px; background: var(--card); }
+.map-link { align-self: flex-start; padding: .6rem 0; font-weight: 600; text-decoration-color: var(--theme); text-underline-offset: 4px; }
 
 /* Footer */
 .footer { text-align: center; padding: 3rem 1.2rem 2.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; overflow: hidden; }
@@ -195,7 +199,7 @@ dd a { text-decoration-color: var(--theme); text-underline-offset: 4px; }
   .cards { grid-template-columns: 1fr; }
   .story, .visit { grid-template-columns: 1fr; }
   .visit-btns .btn { flex: 1; }
-  .map { min-height: 300px; }
+  .map { height: 320px; flex: none; }
 
   .dock {
     position: fixed; inset: auto 0 0 0; z-index: 60; display: grid; grid-template-columns: 1fr 1.2fr 1fr;
