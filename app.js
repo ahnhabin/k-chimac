@@ -183,6 +183,9 @@ function drawSequence(seq) {
   fade(dw, 0, dw - fx, 0);
   fade(0, 0, 0, fy);
   fade(0, dh, 0, dh - fy);
+  // Mask the generator's corner mark; the footer carries the AI-imagery note instead.
+  ctx.fillStyle = '#000';
+  ctx.fillRect(dw * 0.88, dh * 0.8, dw * 0.12 + 1, dh * 0.2 + 1);
   ctx.restore();
   return true;
 }
