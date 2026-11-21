@@ -159,13 +159,31 @@ function drawSequence(seq) {
   }
   if (!img) return false;
   const { width: w, height: h } = canvas;
-  const s = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+  // Frames have a black background, so the image need not cover the canvas: place the subject
+  // where the layout wants it and let the black fill take the rest.
+  const mobile = isMobile();
+  const s = mobile ? w / (img.naturalWidth * 0.62) : h / img.naturalHeight;
   const dw = img.naturalWidth * s, dh = img.naturalHeight * s;
-  // Desktop: shift the subject right so it clears the headline.
-  const cx = isMobile() ? 0.5 : 0.64;
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, w, h);
-  ctx.drawImage(img, Math.min(0, Math.max(w - dw, w * cx - dw / 2)), (h - dh) / 2 - (isMobile() ? h * 0.12 : 0), dw, dh);
+  const x = w * (mobile ? 0.5 : 0.66) - dw / 2, y = h * (mobile ? 0.34 : 0.5) - dh / 2;
+  ctx.drawImage(img, x, y, dw, dh);
+  // Fade the image edges into the fill so no seam shows where the frame ends.
+  const fade = (x0, y0, x1, y1) => {
+    const g = ctx.createLinearGradient(x0, y0, x1, y1);
+    g.addColorStop(0, '#000');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(Math.min(x0, x1) - 1, Math.min(y0, y1) - 1, Math.abs(x1 - x0) || dw + 2, Math.abs(y1 - y0) || dh + 2);
+  };
+  const fx = dw * 0.08, fy = dh * 0.08;
+  ctx.save();
+  ctx.translate(x, y);
+  fade(0, 0, fx, 0);
+  fade(dw, 0, dw - fx, 0);
+  fade(0, 0, 0, fy);
+  fade(0, dh, 0, dh - fy);
+  ctx.restore();
   return true;
 }
 

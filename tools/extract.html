@@ -1,0 +1,57 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Frame extractor</title>
+<body style="background:#111;color:#eee;font:16px sans-serif;padding:2rem">
+<h1>Hero frame extractor</h1>
+<p>Reads <code>video/&lt;flavor&gt;.mp4</code> and writes WebP frames into <code>frames/</code>. Run through <code>tools/frame_server.py</code>.</p>
+<pre id="log"></pre>
+<script>
+// ?flavors=fried,yangnyeom — defaults to all three
+const FLAVORS = (new URLSearchParams(location.search).get('flavors') || 'fried,yangnyeom,soygarlic').split(',');
+const SETS = { desktop: { width: 1280, count: 97, quality: 0.8 }, mobile: { width: 720, count: 65, quality: 0.72 } };
+const log = (m) => { document.getElementById('log').textContent += m + '\n'; };
+const save = (path, body) => fetch('/__save/' + path, { method: 'POST', body }).then((r) => { if (!r.ok) throw new Error('save failed ' + path); });
+
+async function extract(flavor) {
+  const video = document.createElement('video');
+  video.muted = true;
+  video.preload = 'auto';
+  // Load the whole file as a blob: the dev server has no Range support, so a plain URL is not seekable.
+  const res = await fetch(`../video/${flavor}.mp4`);
+  if (!res.ok) throw new Error('no video for ' + flavor);
+  video.src = URL.createObjectURL(await res.blob());
+  await new Promise((ok, fail) => { video.onloadeddata = ok; video.onerror = () => fail(new Error('cannot decode ' + flavor)); });
+  const result = {};
+  for (const [name, set] of Object.entries(SETS)) {
+    const canvas = document.createElement('canvas');
+    canvas.width = set.width;
+    canvas.height = Math.round(set.width * video.videoHeight / video.videoWidth);
+    const ctx = canvas.getContext('2d');
+    for (let i = 0; i < set.count; i++) {
+      const t = Math.min(video.duration - 0.05, (i / (set.count - 1)) * video.duration);
+      if (Math.abs(video.currentTime - t) > 0.001) {
+        video.currentTime = t;
+        await new Promise((ok) => { video.onseeked = ok; });
+      }
+      if (Math.abs(video.currentTime - t) > 0.1) throw new Error(`seek failed at frame ${i}`);
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise((ok) => canvas.toBlob(ok, 'image/webp', set.quality));
+      await save(`frames/${flavor}/${name}/frame_${String(i).padStart(3, '0')}.webp`, blob);
+    }
+    result[name] = set.count;
+    log(`${flavor} ${name}: ${set.count} frames at ${canvas.width}x${canvas.height}`);
+  }
+  return result;
+}
+
+(async () => {
+  const manifest = await fetch('../frames/manifest.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+  for (const flavor of FLAVORS) {
+    try { manifest[flavor] = await extract(flavor); } catch (e) { log('skipped: ' + e.message); }
+  }
+  await save('frames/manifest.json', JSON.stringify(manifest, null, 2));
+  log('DONE');
+  document.title = 'DONE';
+})();
+</script>
+</body>
