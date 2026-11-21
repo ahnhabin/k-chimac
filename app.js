@@ -119,6 +119,7 @@ const isMobile = () => window.innerWidth <= 820;
 let current = 0;
 let progress = 0;
 let manifest = {};
+let manifestLoaded = false;
 const sequences = {};   // id -> { imgs: [], loaded: n, total: n }
 let dirty = true;
 
@@ -136,7 +137,16 @@ function loadSequence(id) {
   const dir = `frames/${id}/${isMobile() ? 'mobile' : 'desktop'}/frame_`;
   for (let i = 0; i < total; i++) {
     const img = new Image();
-    img.onload = () => { seq.loaded++; dirty = true; updateLoading(); };
+    img.onload = () => {
+      seq.loaded++;
+      dirty = true;
+      updateLoading();
+      // Once one flavor is fully in, warm up the next so switching is instant.
+      if (seq.loaded === seq.total) {
+        const next = HERO.find((v) => manifest[v.id] && !sequences[v.id]);
+        if (next) loadSequence(next.id);
+      }
+    };
     img.src = dir + String(i).padStart(3, '0') + '.webp';
     seq.imgs.push(img);
   }
@@ -244,7 +254,12 @@ function render() {
   if (dirty) {
     dirty = false;
     const seq = sequences[HERO[current].id];
-    if (!(seq && drawSequence(seq))) drawFallback();
+    if (seq && drawSequence(seq)) { /* drawn */ }
+    else if (seq || !manifestLoaded) {
+      // Frames exist (or we don't know yet) but none has arrived: stay black rather than flash the fallback.
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    } else drawFallback();
   }
   requestAnimationFrame(render);
 }
@@ -291,4 +306,5 @@ if (document.fonts) document.fonts.ready.then(() => { dirty = true; });
 fetch('frames/manifest.json')
   .then((r) => (r.ok ? r.json() : {}))
   .then((m) => { manifest = m; loadSequence(HERO[current].id); })
-  .catch(() => {});
+  .catch(() => {})
+  .finally(() => { manifestLoaded = true; dirty = true; });
