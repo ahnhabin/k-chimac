@@ -162,8 +162,6 @@ dd a { text-decoration-color: var(--theme); text-underline-offset: 4px; }
 .footer { text-align: center; padding: 3rem 1.2rem 2.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; overflow: hidden; }
 .footer-big { display: block; font-family: "Black Han Sans", sans-serif; font-size: clamp(6rem, 22vw, 16rem); line-height: 1; color: transparent; -webkit-text-stroke: 1.5px var(--line); margin-bottom: 1rem; }
 
-.footer-note { margin-top: .6rem; font-size: .75rem; opacity: .7; }
-
 /* Dock (mobile only) */
 .dock { display: none; }
 
