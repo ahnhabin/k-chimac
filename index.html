@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>K-ChiMac | Korean Fried Chicken | Richfield, MN</title>
+<meta name="description" content="Korean fried chicken in Richfield, Minnesota. Original, yangnyeom, soy garlic and more. 6420 Nicollet Ave.">
+<meta name="theme-color" content="#0e0b0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Black+Han+Sans&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top" id="top">
+  <a class="brand" href="#hero" aria-label="K-ChiMac home">
+    <img src="https://static.wixstatic.com/media/820208_b200933fca4b449db27c2c6f88495a77~mv2.png" alt="K-ChiMac logo" width="56" height="56">
+    <span>K-CHIMAC</span>
+  </a>
+  <nav class="top-nav" aria-label="Main">
+    <a href="#chicken">Chicken</a>
+    <a href="#kitchen">Menu</a>
+    <a href="#story">Our Story</a>
+    <a href="#visit">Visit</a>
+  </nav>
+  <a class="btn btn-solid top-call" href="tel:+16122868701">Call 612-286-8701</a>
+</header>
+
+<main>
+  <!-- HERO: scroll-scrubbed animation -->
+  <section class="hero" id="hero">
+    <div class="hero-sticky">
+      <canvas id="heroCanvas" aria-hidden="true"></canvas>
+      <div class="hero-shade"></div>
+
+      <div class="hero-copy" id="heroCopy">
+        <p class="hero-sub" id="heroSub"></p>
+        <h1 class="hero-title" id="heroTitle"></h1>
+        <p class="hero-desc" id="heroDesc"></p>
+        <div class="hero-btns">
+          <a class="btn btn-outline" href="tel:+16122868701">Call to order</a>
+          <a class="btn btn-solid" href="#chicken">View menu</a>
+        </div>
+      </div>
+
+      <div class="hero-nav" aria-label="Choose a flavor">
+        <span class="hero-index" id="heroIndex">01</span>
+        <button type="button" id="prevFlavor">Prev</button>
+        <span class="hero-nav-line"></span>
+        <button type="button" id="nextFlavor">Next</button>
+        <span class="hero-loading" id="heroLoading" hidden></span>
+      </div>
+
+      <div class="scroll-guide" id="scrollGuide" aria-hidden="true"><span></span></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <section class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marquee"></div>
+  </section>
+
+  <!-- CHICKEN -->
+  <section class="section" id="chicken">
+    <p class="eyebrow reveal">치킨 · Korean fried chicken</p>
+    <h2 class="reveal">Pick your cut.<br><em>Pick your flavor.</em></h2>
+    <div class="cuts" id="cuts"></div>
+    <div class="flavors" id="flavors"></div>
+  </section>
+
+  <!-- KITCHEN MENU -->
+  <section class="section" id="kitchen">
+    <p class="eyebrow reveal">한식 · From the kitchen</p>
+    <h2 class="reveal">More than <em>chicken.</em></h2>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div class="cards" id="cards"></div>
+    <p class="advisory">Consuming raw or undercooked eggs, meats, poultry or seafood may increase your risk of foodborne illness.</p>
+  </section>
+
+  <!-- STORY -->
+  <section class="section story" id="story">
+    <div class="story-text">
+      <p class="eyebrow reveal">Our story</p>
+      <h2 class="reveal">A taste of Korea,<br><em>served with heart.</em></h2>
+      <p class="reveal">For years we ran a neighborhood restaurant near the University of Minnesota. After some time away to rest, we are back with a new chapter here in Richfield.</p>
+      <p class="reveal">Korean fried chicken is what we do best, finished with sauces imported from Korea, alongside the dishes we grew up on: tteokbokki, bulgogi, bibimbap and stews.</p>
+      <a class="btn btn-outline reveal" href="#visit">Come see us</a>
+    </div>
+    <div class="story-photos">
+      <img class="reveal" loading="lazy" src="https://static.wixstatic.com/media/820208_80beee76109f4eb09f33e27a7334b1a4~mv2.jpeg" alt="Tteokbokki, spicy rice cakes">
+      <img class="reveal" loading="lazy" src="https://static.wixstatic.com/media/820208_f0996a71f02445198838d752aa0404b4~mv2.jpeg" alt="Bulgogi">
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section class="section visit" id="visit">
+    <div class="visit-info">
+      <p class="eyebrow reveal">Visit</p>
+      <h2 class="reveal">Find us in <em>Richfield.</em></h2>
+      <dl class="reveal">
+        <dt>Address</dt>
+        <dd>6420 Nicollet Ave.<br>Richfield, MN 55423</dd>
+        <dt>Phone</dt>
+        <dd><a href="tel:+16122868701">612-286-8701</a></dd>
+        <dt>Hours</dt>
+        <dd id="hours">Call us for today's hours</dd>
+      </dl>
+      <div class="visit-btns reveal">
+        <a class="btn btn-solid" href="tel:+16122868701">Call to order</a>
+        <a class="btn btn-outline" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=6420+Nicollet+Ave+Richfield+MN+55423">Get directions</a>
+      </div>
+    </div>
+    <iframe class="map reveal" title="Map to K-ChiMac" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps?q=6420+Nicollet+Ave,+Richfield,+MN+55423&output=embed"></iframe>
+  </section>
+</main>
+
+<footer class="footer">
+  <span class="footer-big">치맥</span>
+  <p>K-ChiMac · Korean Fried Chicken · 6420 Nicollet Ave., Richfield MN 55423 · <a href="tel:+16122868701">612-286-8701</a></p>
+</footer>
+
+<!-- Mobile bottom bar: big thumb-sized targets -->
+<nav class="dock" aria-label="Quick actions">
+  <a href="#chicken"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Menu</a>
+  <a class="dock-main" href="tel:+16122868701"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Call</a>
+  <a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=6420+Nicollet+Ave+Richfield+MN+55423"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Directions</a>
+</nav>
+
+<script src="app.js"></script>
+</body>
+</html>
