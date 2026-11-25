@@ -172,7 +172,9 @@ function drawSequence(seq) {
   // Frames have a black background, so the image need not cover the canvas: place the subject
   // where the layout wants it and let the black fill take the rest.
   const mobile = isMobile();
-  const s = mobile ? w / (img.naturalWidth * 0.62) : h / img.naturalHeight;
+  // Never enlarge a frame past its own pixels (1 frame px = 1 CSS px), or it goes soft.
+  const dpr = w / canvas.clientWidth;
+  const s = Math.min(mobile ? w / (img.naturalWidth * 0.62) : h / img.naturalHeight, dpr);
   const dw = img.naturalWidth * s, dh = img.naturalHeight * s;
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, w, h);

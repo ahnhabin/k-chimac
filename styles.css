@@ -61,8 +61,9 @@ h2 em { font-style: normal; color: var(--theme); transition: color .5s; }
 /* Hero */
 .hero { height: 320vh; position: relative; }
 .hero-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
-#heroCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.hero-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(14, 11, 10, .88) 0%, rgba(14, 11, 10, .35) 48%, rgba(14, 11, 10, 0) 70%); pointer-events: none; }
+/* Lift the chicken like a key light; the black background stays black under these filters. */
+#heroCanvas { position: absolute; inset: 0; width: 100%; height: 100%; filter: brightness(1.18) saturate(1.14) contrast(1.05); }
+.hero-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(14, 11, 10, .88) 0%, rgba(14, 11, 10, .35) 32%, rgba(14, 11, 10, 0) 46%); pointer-events: none; }
 .hero-copy {
   position: absolute; left: clamp(1.2rem, 6vw, 6rem); top: 50%; transform: translateY(-50%);
   max-width: min(36rem, 88vw); transition: opacity .35s, transform .35s;
@@ -70,6 +71,8 @@ h2 em { font-style: normal; color: var(--theme); transition: color .5s; }
 .hero-copy.swap { opacity: 0; transform: translateY(calc(-50% + 18px)); }
 .hero-sub { letter-spacing: .3em; text-transform: uppercase; font-size: .9rem; font-weight: 600; color: var(--theme); transition: color .5s; }
 .hero-title { font-size: clamp(3.4rem, 11vw, 9rem); margin: .4rem 0 1rem; }
+/* Wide screens: the chicken stays at its native size, so the title grows to fill the space beside it. */
+@media (min-width: 1441px) { .hero-title { font-size: max(9rem, min(8.9vw, 22vh, 10.7rem)); } }
 .hero-desc { font-size: 1.1rem; color: var(--cream); opacity: .9; max-width: 28rem; margin-bottom: 1.8rem; }
 .hero-btns { display: flex; flex-wrap: wrap; gap: .8rem; }
 
@@ -181,7 +184,7 @@ dd a { text-decoration-color: var(--theme); text-underline-offset: 4px; }
   .top-nav, .top-call { display: none; }
   .brand img { width: 46px; height: 46px; }
 
-  .hero-shade { background: linear-gradient(180deg, rgba(14, 11, 10, .25) 0%, rgba(14, 11, 10, .2) 35%, rgba(14, 11, 10, .92) 72%); }
+  .hero-shade { background: linear-gradient(180deg, rgba(14, 11, 10, 0) 0%, rgba(14, 11, 10, 0) 45%, rgba(14, 11, 10, .92) 72%); }
   .hero-copy { top: auto; bottom: calc(var(--dock-h) + 4.2rem); transform: none; left: 1.2rem; right: 1.2rem; max-width: none; }
   .hero-copy.swap { transform: translateY(18px); }
   .hero-desc { font-size: 1rem; margin-bottom: 1.2rem; }
